@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)file:///C:/Users/chiru/Downloads/index3.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webpage Interactivity Example</title>
+    <style>
+        /* Styles for the dropdown menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .show {
+            display: block;
+        }
+    </style>
+    <script>
+        // Form validation
+        function validateForm() {
+            const form = document.forms["myForm"];
+            const name = sanitizeInput(form["name"].value);
+            const email = sanitizeInput(form["email"].value);
+            const message = sanitizeInput(form["message"].value);
+
+            if (name === "" || email === "" || message === "") {
+                alert("All fields must be filled out");
+                return false;
+            }
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                alert("Please enter a valid email address");
+                return false;
+            }
+
+            return true;
+        }
+
+        // Sanitize user input to prevent XSS
+        function sanitizeInput(input) {
+            return input.replace(/[&<>"'/]/g, function (match) {
+                const escape = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;',
+                    '/': '&#x2F;'
+                };
+                return escape[match];
+            });
+        }
+
+        // Toggle dropdown menu
+        function toggleDropdown() {
+            document.getElementById("dropdownContent").classList.toggle("show");
+        }
+
+        // Close the dropdown menu if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown button')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        // Update content dynamically
+        function updateContent(content) {
+            const contentDiv = document.getElementById("dynamicContent");
+            contentDiv.innerHTML = content;
+        }
+
+        // Handle dropdown link clicks
+        function handleLinkClick(content) {
+            return function() {
+                updateContent(content);
+                toggleDropdown();
+            }
+        }
+
+        // Initialize dropdown links with content
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("linkJavaScript").onclick = handleLinkClick("JavaScript is a versatile programming language commonly used in web development.");
+            document.getElementById("linkWebDev").onclick = handleLinkClick("Web development involves building and maintaining websites. It includes aspects such as web design, web publishing, web programming, and database management.");
+            document.getElementById("linkContact").onclick = handleLinkClick("Contact us at contact@example.com for more information.");
+        });
+    </script>
+</head>
+<body>
+    <!-- Form with validation -->
+    <form name="myForm" onsubmit="return validateForm()">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email"><br><br>
+        <label for="message">Message:</label>
+        <textarea id="message" name="message"></textarea><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <br>
+
+    <!-- Interactive dropdown menu -->
+    <div class="dropdown">
+        <button onclick="toggleDropdown()">Dropdown</button>
+        <div id="dropdownContent" class="dropdown-content">
+            <a href="file:///C:/Users/chiru/Downloads/index3.html#" id="linkJavaScript">Learn JavaScript</a>
+            <a href="file:///C:/Users/chiru/Downloads/index3.html#" id="linkWebDev">Web Development Tutorials</a>
+            <a href="file:///C:/Users/chiru/Downloads/index3.html#" id="linkContact">Contact Us</a>
+        </div>
+    </div>
+
+    <br><br>
+
+    <!-- Dynamic content update -->
+    <div id="dynamicContent">
+        This is the original content.
+    </div>
+
+
+</body></html>
